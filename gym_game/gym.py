@@ -31,12 +31,9 @@ class Game:
 
     def step(self, cell):
         self._steps += 1
+        r = -1 if self._board[cell] == 0 else 1
+        self._board[cell] = 1
         game_over = self._is_game_over()
-        if self._board[cell] == 0:
-            self._board[cell] = 1
-            r = 1
-        else:
-            r = -1
         return self._board, r, game_over, {}
 
     def render(self, line_break=10):
