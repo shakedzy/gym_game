@@ -39,7 +39,25 @@ class Game:
             r = -1
         return self._board, r, game_over, {}
 
-    def render(self):
-        print('-' + '-' * 4 * len(self._board))
-        print('|' + '|'.join([' ' + str(int(n)) + ' ' for n in self._board]) + '|')
-        print('-' + '-' * 4 * len(self._board))
+    def render(self, line_break=10):
+        def print_single_line(line): print('|' + '|'.join([' ' + str(int(n)) + ' ' for n in line]) + '|')
+        def print_bars(line): print('-' + '-' * 4 * len(line))
+        if self._board_size <= line_break:
+            print_bars(self._board)
+            print_single_line(self._board)
+            print_bars(self._board)
+        else:
+            last_line = None
+            brd = np.copy(self._board)
+            if self._board_size % line_break != 0:
+                idx = self._board_size // line_break * line_break
+                last_line = brd[idx:]
+                brd = brd[:idx]
+            brd = brd.reshape((-1, line_break))
+            print_bars(brd[0])
+            for line in brd:
+                print_single_line(line)
+                print_bars(line)
+            if last_line is not None:
+                print_single_line(last_line)
+                print_bars(last_line)
